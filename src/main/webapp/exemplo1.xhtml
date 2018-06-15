@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<ui:composition template= "/WEB-INF/templates/layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+	
+
+<!--pessoaController.pessoa.nome Entra na classe, cria um objeto pessoa e dá o setNome(nome) -->
+<!--pessoaController.inserePessoa Entra na classe e chama o metodo inserePessoa -->
+<!--for="txtIdade" id="txtIdade" required="true" criar mensagem de validação -->
+
+<!-- Necessito criar um id para o panelGrid e em seguida da update no form para limpar todos os campos -->
+<!--  confirmDialog global true para todos os confirmDialog caso queria fazer outro crie um ID -->
+<!--  enctype="multipart/form-data para que a pagina possa receber um arquivo -->
+
+<ui:define name="corpo">
+	<p:messages id="msg" showDetail="true" closable="true"/>
+	 		<p:panel header="Cadastro de cliente">
+				<h:form id="frmCad" enctype="multipart/form-data">
+					<h:panelGrid columns="2" id="cad" cellpadding="5"> 
+						<p:outputLabel for="txtNome" value="Nome"/>
+						<p:inputText id="txtNome" value="#{pessoaController.pessoa.nome}"
+						 style="width:auto"
+						 required="true"
+						 requiredMessage="Nome obrigatório"/>
+						 	
+						<p:outputLabel for="txtCodigo" value="Codigo"/>
+						<p:inputText id="txtCodigo" value="#{pessoaController.pessoa.codigo}"
+						 style="width:auto"
+						 required="true"
+						 requiredMessage="Codigo obrigatório"/>	
+						 		
+						<p:outputLabel for="txtIdade" value="Idade"/>
+						<p:inputText id ="txtIdade" value="#{pessoaController.pessoa.idade}" 
+						required="true"
+						requiredMessage="Idade obrigatório"
+						style="width:15%">
+							<f:validateLongRange minimum="18" maximum="100"/>
+						</p:inputText>
+
+						<p:outputLabel for="rdSexo" value="Sexo"/>
+						<p:selectOneRadio id="rdSexo" value="#{pessoaController.pessoa.sexo}"
+						required="true" 
+						requiredMessage="Sexo obrigatório">
+			            	<f:selectItem id="rdM" itemLabel="Masculino" itemValue="M" />
+			            	<f:selectItem id="rdF" itemLabel="Feminino" itemValue="F" />
+			            </p:selectOneRadio>		
+			        </h:panelGrid>
+			        <p:commandButton value = "OK" actionListener="#{pessoaController.inserePessoa}" 
+		            update="frmTbl:tbl msg frmCad:cad"/>
+		            <p:commandButton value="Próximo" action="#{pessoaController.navega}" immediate="true" ajax="false"/>
+		            
+		            <p:fileUpload fileUploadListener="#{pessoaController.upload}" auto="false"
+		  			style="padding:5px"
+		            cancelLabel="Cancelar" uploadLabel="Enviar" label="Arquivo"
+		            allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
+		            invalidFileMessage="Arquivo não suportado"
+		            sizeLimit="1024000"
+		            invalidSizeMessage="Tamanho do arquivo superior o limite"
+		            sequential = "true"
+		            fileLimit="3"
+		            fileLimitMessage="Permitido 3 arquivos de cada vez"
+		            multiple="true"/>
+		            
+			    </h:form> 
+			</p:panel>
+		
+		<!-- var="p" trabalha igual for(Pessoa p = Lista) // p.nome; p.idade; -->
+		<h:form  id="frmTbl">
+			<p:dataTable id="tbl" var="p" value="#{pessoaController.listaPessoas}" emptyMessage="Sem Registro" 
+			reflow="true" rows="5" paginator="true" 
+			rowStyleClass="#{p.idade>80?'branco':'verde'}">
+			<!-- reflow torna responsivo a tabela fica em linha -->	
+			<!-- row a cada 3 ele cria uma nova pagina (paginator) -->"		
+				<p:column headerText="Nome" sortBy="#{p.nome}" filterBy="#{p.nome}" style="color:blue">
+			        <h:outputText value="#{p.nome}" />
+			    </p:column>
+			 
+			    <p:column headerText="Idade" sortBy="#{p.idade}">
+			        <h:outputText value="#{p.idade}" />
+			    </p:column>
+			 
+			    <p:column headerText="Sexo" sortBy="#{p.sexo}" priority="6">
+			        <h:outputText value="#{p.sexo}" />
+			    </p:column>
+			    <p:column headerText="Opções" exportable="false">
+			    	<p:commandButton icon="ui-icon-pencil" actionListener="#{pessoaController.edita}" update="frmCad:cad">
+			    		<f:attribute name="pessoaEdita" value="#{p}"/>		    		
+			    	</p:commandButton>
+			    	<p:commandButton icon="ui-icon-trash" actionListener="#{pessoaController.exclui}" update="frmCad:cad frmTbl:tbl">
+			    		<p:confirm header="Confirmação" message="Você deseja Excluir esta Pessoa?" icon="ui-icon-alert"/>
+			    		<f:attribute name="pessoaExclui" value="#{p}"/>		    		
+			    	</p:commandButton>
+			    </p:column>
+			</p:dataTable>
+			
+			<p:commandButton ajax="false" immediate="true" value="Exportar">
+				<p:dataExporter type="xls" target="tbl" fileName="pessoas"/>		
+			</p:commandButton>
+			
+			<p:confirmDialog global="true" showEffect="fade" hideEffect="explode">
+				<p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>
+				<p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>
+			</p:confirmDialog>
+		</h:form>
+	</ui:define>
+</ui:composition>

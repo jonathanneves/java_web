@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<ui:composition template= "/WEB-INF/templates/layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+	
+
+<!--pessoaController.pessoa.nome Entra na classe, cria um objeto pessoa e dá o setNome(nome) -->
+<!--pessoaController.inserePessoa Entra na classe e chama o metodo inserePessoa -->
+<!--for="txtIdade" id="txtIdade" required="true" criar mensagem de validação -->
+
+<!-- Necessito criar um id para o panelGrid e em seguida da update no form para limpar todos os campos -->
+<!--  confirmDialog global true para todos os confirmDialog caso queria fazer outro crie um ID -->
+
+<ui:define name="corpo">
+
+		<p:messages id="msg" showDetail="true" closable="true"/> <!-- Mensagem de campo vazio -->	
+	
+			<p:panel header="Lista de Aprovados">
+				<h:form id="frmCad">
+					<h:panelGrid columns="2" id="cad" cellpadding="5"> 
+						<p:outputLabel for="txtNome" value="Aluno"/>
+						<p:inputText id="txtNome" value="#{alunoController.aluno.nome}"
+						 required="true"
+						 requiredMessage="Nome obrigatório"
+						 style="width: 100%"/>	
+						 		
+						<p:outputLabel for="txtNota1" value="Nota 1"/>
+						<p:inputText id ="txtNota1" value="#{alunoController.aluno.nota1}" 
+						required="true"
+						requiredMessage="Nota 1 obrigatória"
+						style="width:25%">
+							<f:validateLongRange minimum="0" maximum="10"/>
+						</p:inputText>
+						
+						<p:outputLabel for="txtNota2" value="Nota 2"/>
+						<p:inputText id ="txtNota2" value="#{alunoController.aluno.nota2}" 
+						required="true"
+						requiredMessage="Nota 2 obrigatória"
+						style="width:25%">
+							<f:validateLongRange minimum="0" maximum="10"/>
+						</p:inputText>
+						
+						<p:outputLabel for="txtNota3" value="Nota 3"/>
+						<p:inputText id ="txtNota3" value="#{alunoController.aluno.nota3}" 
+						required="true"
+						requiredMessage="Nota 3 obrigatória"
+						style="width:25%">
+							<f:validateLongRange minimum="0" maximum="10"/>
+						</p:inputText>
+	
+			        </h:panelGrid>
+			    </h:form> 
+		            <p:commandButton value = "OK" actionListener="#{alunoController.insereAluno}" 
+		            update="frmTbl:tbl msg frmCad:cad"/>
+			</p:panel>
+		
+		<!-- var="p" trabalha igual for(Pessoa p = Lista) // p.nome; p.idade; -->
+		<h:form  id="frmTbl">
+			<p:dataTable id="tbl" var="a" value="#{alunoController.listaAlunos}" emptyMessage="Sem Registro" 
+			reflow="true" rows="10" paginator="true">
+			<!-- reflow torna responsivo a tabela fica em linha -->	
+			<!-- row a cada 3 ele cria uma nova pagina (paginator) -->"		
+				<p:column headerText="Nome" sortBy="#{a.nome}" filterBy="#{a.nome}" style="color:blue">
+			        <h:outputText value="#{a.nome}" />
+			    </p:column>
+			 
+			    <p:column headerText="Nota 1" sortBy="#{a.nota1}" priority="6">
+			        <h:outputText value="#{a.nota1}" />
+			    </p:column>
+			    
+			    <p:column headerText="Nota 2" sortBy="#{a.nota2}" priority="6">
+			        <h:outputText value="#{a.nota2}" />
+			    </p:column>
+			    
+			    <p:column headerText="Nota 3" sortBy="#{a.nota3}" priority="6">
+			        <h:outputText value="#{a.nota3}" />
+			    </p:column>
+			    
+			    <p:column headerText="Média" sortBy="#{a.media}" > <!-- Some a coluna conforme diminui a tela -->
+			        <h:outputText value="#{a.media}" />
+			    </p:column>
+			    
+			    <p:column headerText="Aprovação" sortBy="#{a.aprovacao}"> <!-- Some a coluna conforme diminui a tela -->
+			        <h:outputText value="#{a.aprovacao}" />
+			    </p:column>
+			    <p:column headerText="Opções">
+			    	<p:commandButton icon="ui-icon-pencil" actionListener="#{alunoController.edita}" update="frmCad:cad">
+			    		<f:attribute name="alunoEdita" value="#{a}"/>		    		
+			    	</p:commandButton>
+			    	<p:commandButton icon="ui-icon-trash" actionListener="#{alunoController.exclui}" update="frmCad:cad frmTbl:tbl">
+			    		<p:confirm header="Confirmação" message="Você deseja Excluir este Aluno?" icon="ui-icon-alert"/>
+			    		<f:attribute name="alunoExclui" value="#{a}"/>		    		
+			    	</p:commandButton>
+			    </p:column>
+			</p:dataTable>
+			
+			<p:confirmDialog global="true" showEffect="fade" hideEffect="explode">
+				<p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>
+				<p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>
+			</p:confirmDialog>
+		</h:form>
+	</ui:define>
+</ui:composition>

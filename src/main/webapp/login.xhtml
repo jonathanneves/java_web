@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<ui:composition template= "/WEB-INF/templates/loginLayout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+<!-- for="Txtlogin verifica o id abaixo e já valida as alterações -->
+<!-- imeddiate ajax, permite sem preencher o formulário charmar o metódo do controller direto -->
+	<ui:define name="corpo">
+		<p:messages id="msg" showDetail="true" closable="true"/>
+			<h:form id="frmlogin">
+				<p:outputLabel value="Usuário" for="txtlogin" style="color:white; font-size:17px; font-weight:bold;"/>
+				<p:inputText id="txtlogin" required="true" value="#{loginController.login}"
+					requiredMessage="Login obrigatória"
+					placeholder="👤 Seu usuário"
+					style="width:100%; margin: 5px 0; padding: 5px"/>
+				<p:outputLabel value="Senha" for="txtsenha" style="color:white; font-size:17px; font-weight: bold;"/>
+				<p:password id="txtsenha" required="true" value="#{loginController.senha}"
+					requiredMessage="Senha obrigatória"
+					placeholder="🔒 Sua senha"
+					style="width:100%; margin: 5px 0; padding: 5px"/>
+				<p:commandButton action="#{loginController.fazLogin}" value="Logar" update="msg"
+					style="width:100%; margin: 15px 0; padding: 5px">
+					<p:resetInput target="container"/>
+				</p:commandButton>
+			</h:form>
+	</ui:define>
+</ui:composition>

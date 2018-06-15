@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<ui:composition template= "/WEB-INF/templates/layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+	
+	
+	<ui:define name="corpo">
+		<h:form> 
+			<p:editor style="margin:10px"/> 
+			
+			<p:panel style="margin:10px" header="Cadastro de cliente">
+				<h:panelGrid columns="2">
+					<p:outputLabel value="Nome" />
+					<p:inputText/>
+		
+					<p:outputLabel value="CPF" />
+					<p:inputMask mask="999.999.999-99" />
+					
+					<p:outputLabel value="Data de nascimento" />
+					<p:calendar pattern="dd/MM/yyyy" mask="99/99/9999" />
+					
+					<p:commandButton value="Salvar" />
+					<p:rating/>
+				</h:panelGrid>
+			</p:panel>
+		<div align="center" style="margin:10px">
+		<p:growl id="messages" />
+		    <p:splitButton value="Salvar" actionListener="#{buttonView.save}" update="messages" icon="ui-icon-disk">
+		        <p:menuitem value="Atualizar" actionListener="#{buttonView.update}" update="messages" icon="ui-icon-arrowrefresh-1-w" />
+		        <p:menuitem value="Deletar" actionListener="#{buttonView.delete}" ajax="false" icon="ui-icon-close" />
+		        <p:separator />
+		        <p:menuitem value="Página Inicial" url="http://www.primefaces.org" icon="ui-icon-extlink" />
+		    </p:splitButton>
+	    </div>	
+	    
+	    <div>
+	        <p:growl id="growl" showDetail="true" />
+	             
+		    <h3 style="margin-top: 0; font-family:Arial; padding-left:90px">Slider</h3>
+		    <h:panelGrid columns="1" style="margin-bottom: 10px">
+		        <p:inputText id="txt1" value="#{sliderView.number1}" />
+		        <p:slider for="txt1" />
+		    </h:panelGrid>
+		    
+		    <p:growl id="msg" />
+		    	<h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5">
+		       		<h:outputText style="font-family:Arial; font-weight: bold;" value="Basic: " />
+		        	<p:inputSwitch value="#{selectBooleanView.value1}" /> 
+	    		</h:panelGrid>
+	    		
+	    	<p:commandButton value="Enviar" icon="ui-icon-check" update="display" oncomplete="PF('dlg').show()" />
+		</div>
+		
+		<div style="padding-top:10px">	
+			<p:notificationBar position="top" effect="slide" styleClass="top" widgetVar="bar">
+	   			<h:outputText value="Você foi hackeado com sucesso!." style="font-size:36px;" />
+			</p:notificationBar>
+			
+			<p:commandButton value="Mostar" onclick="PF('bar').show()" type="button" icon="ui-icon-arrow-1-s"/>
+			<p:commandButton value="Esconder" onclick="PF('bar').hide()" type="button" icon="ui-icon-arrow-1-n"/>
+		</div>
+		
+		<div>
+	   		<h1 style="color:blue;font-family:Arial">Mensagens</h1>
+	   			<p:inputTextarea rows="5" cols="30" counter="display" maxlength="140" counterTemplate="faltam {0} caracteres." autoResize="false" />
+	    	<h:outputText id="display" />
+	    </div>
+	    <p:calendar mode="popup" showOn="button" popupIconOnly="true" style="padding-top:20px;"/>
+	    <div>
+	    	<p:colorPicker/>
+	    </div>
+	    
+		</h:form>
+	</ui:define>
+</ui:composition>

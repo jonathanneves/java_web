@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<ui:composition template="/WEB-INF/templates/Layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+<ui:define name="corpo">
+	<h:form id="frmTab">
+		<p:panel header="Cidades">
+			<p:dataTable emptyMessage="Sem registros" id="table">
+				<f:facet name="header">
+					<p:commandButton value="Novo" oncomplete="PF('dlg').show();"/>
+				</f:facet>
+				<p:column headerText="Nome"/>
+				<p:column headerText="UF"/>
+				<p:column headerText="Opções"/>
+			</p:dataTable>
+		</p:panel>
+	</h:form>
+	
+	<p:dialog header="Cidades - Cadastro" widgetVar="dlg" 
+	resizable="false" draggable="false" modal="true" closable="false">
+		<h:form id="frmCad" enctype="multipart/form-data">
+			<h:panelGrid columns="2">
+				<p:commandButton value="Fechar" oncomplete="PF('dlg').hide();"/>
+			</h:panelGrid>
+		</h:form>
+	</p:dialog>
+</ui:define>
+</ui:composition>

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<ui:composition template= "/WEB-INF/templates/loginLayout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+	
+
+<!--pessoaController.pessoa.nome Entra na classe, cria um objeto pessoa e dá o setNome(nome) -->
+<!--pessoaController.inserePessoa Entra na classe e chama o metodo inserePessoa -->
+<!--for="txtIdade" id="txtIdade" required="true" criar mensagem de validação -->
+
+<!-- Necessito criar um id para o panelGrid e em seguida da update no form para limpar todos os campos -->
+<!--  confirmDialog global true para todos os confirmDialog caso queria fazer outro crie um ID -->
+
+	<ui:define name="corpo">
+	 	<h2 style="padding-bottom:5px">Login ou senha incorretos.</h2>
+	 	<h:form>
+	 		<p:commandButton value="Tentar Novamente" action="login"/>
+	 	</h:form>
+	</ui:define>
+</ui:composition>
+
